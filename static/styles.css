@@ -1,0 +1,31 @@
+/* Add your custom CSS styles here */
+
+/* Example custom styles for elements */
+body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+/* Adjust styles for specific elements as needed */
+/* For instance, you can customize form elements like input fields and buttons */
+
+/* Example custom styles for form elements */
+.form-control {
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    color: #333;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* You can add more custom styles for specific components and elements */
