@@ -18,7 +18,29 @@ def create_tables():
         )
     ''')
 
-    # Add other table creation statements here if needed (e.g., polls, options, votes)
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS polls (
+            id INTEGER PRIMARY KEY,
+            question TEXT NOT NULL
+        )
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS poll_options (
+            id INTEGER PRIMARY KEY,
+            poll_id INTEGER,
+            option_text TEXT NOT NULL
+        )
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS votes (
+            id INTEGER PRIMARY KEY,
+            user_id INTEGER,
+            poll_id INTEGER,
+            option_id INTEGER
+        )
+    ''')
 
     conn.commit()
     conn.close()
@@ -29,7 +51,26 @@ def init_db():
 
     # Initialize the database with the schema
     cursor.executescript('''
-        -- Add your schema here
+        -- Create the 'polls' table
+        CREATE TABLE IF NOT EXISTS polls (
+            id INTEGER PRIMARY KEY,
+            question TEXT NOT NULL
+        );
+
+        -- Create the 'poll_options' table
+        CREATE TABLE IF NOT EXISTS poll_options (
+            id INTEGER PRIMARY KEY,
+            poll_id INTEGER,
+            option_text TEXT NOT NULL
+        );
+
+        -- Create the 'votes' table
+        CREATE TABLE IF NOT EXISTS votes (
+            id INTEGER PRIMARY KEY,
+            user_id INTEGER,
+            poll_id INTEGER,
+            option_id INTEGER
+        );
     ''')
 
     conn.commit()
@@ -42,10 +83,11 @@ def add_user(username, password):
     conn.commit()
     conn.close()
 
-def get_user_by_username(username):
+# Add poll-related database functions
+def get_all_polls():
     conn = get_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT id, password FROM users WHERE username=?", (username,))
-    user = cursor.fetchone()
+    cursor.execute("SELECT id, question FROM polls")
+    polls = cursor.fetchall()
     conn.close()
-    return user
+    return polls

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create a New Poll</title>
+</head>
+<body>
+    <h1>Create a New Poll</h1>
+    <form method="post" action="/create_poll">
+        <label for="question">Poll Question:</label>
+        <input type="text" name="question" id="question" required>
+        <p>Poll Options:</p>
+        <ul>
+            <li><input type="text" name="option" required></li>
+            <li><input type="text" name="option" required></li>
+            <!-- Add more options as needed -->
+        </ul>
+        <button type="submit">Create Poll</button>
+    </form>
+    <a href="/polls">Back to Poll List</a>
+</body>
+</html>
