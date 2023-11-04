@@ -1,5 +1,3 @@
-/* Add your custom CSS styles here */
-
 /* Example custom styles for elements */
 body {
     background-color: #f8f9fa;
@@ -10,7 +8,6 @@ body {
 }
 
 /* Adjust styles for specific elements as needed */
-/* For instance, you can customize form elements like input fields and buttons */
 
 /* Example custom styles for form elements */
 .form-control {
@@ -28,4 +25,17 @@ body {
     background-color: #0056b3;
 }
 
-/* You can add more custom styles for specific components and elements */
+/* Flash notifications style */
+/* Green for success */
+.flash-success {
+    color: #28a745;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+/* Red for danger (unsuccessful) */
+.flash-danger {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}

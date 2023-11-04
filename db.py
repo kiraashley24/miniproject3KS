@@ -41,3 +41,4 @@ def get_user_by_username(username):
     user = cursor.fetchone()
     conn.close()
     return user
+
