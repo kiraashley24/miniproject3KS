@@ -111,3 +111,12 @@ def record_vote(user_id, poll_id, option_id):
     conn.commit()
     conn.close()
 
+def has_user_voted(user_id, poll_id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM votes WHERE user_id = ? AND poll_id = ?", (user_id, poll_id))
+    result = cursor.fetchone() is not None
+    conn.close()
+    return result
+
+

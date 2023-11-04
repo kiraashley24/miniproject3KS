@@ -92,8 +92,14 @@ def create_poll():
 # View a specific poll
 @app.route('/polls/<int:poll_id>')
 def view_poll(poll_id):
+    user_id = session.get('user_id')
     options = db.get_poll_options(poll_id)
-    return render_template('view_poll.html', poll_id=poll_id, options=options)
+
+    # Check if the user has already voted in this poll
+    user_has_voted = db.has_user_voted(user_id, poll_id)
+
+    return render_template('view_poll.html', user_has_voted=user_has_voted, poll_id=poll_id, options=options)
+
 
 
 # Vote on a poll option
@@ -108,11 +114,18 @@ def vote(poll_id):
     if not option_id:
         flash('Please select an option to vote.', 'danger')
     else:
-        # Implement the voting logic here (record the vote in the database)
-        db.record_vote(session['user_id'], poll_id, option_id)
-        flash('Vote recorded!', 'success')
+        user_id = session['user_id']
+
+        # Check if the user has already voted in this poll
+        if db.has_user_voted(user_id, poll_id):
+            flash('You have already voted in this poll.', 'danger')
+        else:
+            # Record the vote in the database
+            db.record_vote(user_id, poll_id, option_id)
+            flash('Vote recorded!', 'success')
 
     return redirect(url_for('view_poll', poll_id=poll_id))
+
 
 @app.context_processor
 def inject_db_functions():
