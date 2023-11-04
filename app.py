@@ -70,7 +70,10 @@ def create_poll():
     if request.method == 'POST':
         question = request.form['question']
         poll_id = db.add_poll(question)
-        options = request.form.getlist('option_text')  # Get a list of options
+        options = request.form.getlist('option_text')
+
+        # Remove empty options
+        options = [option for option in options if option.strip()]
 
         # Ensure that there are up to 5 options
         if len(options) > 5:
@@ -83,6 +86,7 @@ def create_poll():
         flash('Poll created successfully!', 'success')
         return redirect(url_for('list_polls'))
     return render_template('create_poll.html')
+
 
 
 # View a specific poll
