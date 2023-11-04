@@ -61,7 +61,8 @@ def logout():
 @app.route('/polls')
 def list_polls():
     polls = db.get_all_polls()
-    return render_template('poll_list.html', polls=polls)
+    return render_template('poll_list.html', polls=polls, poll_id=None)
+
 
 # Create a new poll
 @app.route('/polls/create', methods=['GET', 'POST'])
@@ -80,15 +81,39 @@ def create_poll():
 @app.route('/polls/<int:poll_id>')
 def view_poll(poll_id):
     options = db.get_poll_options(poll_id)
-    return render_template('view_poll.html', options=options)
+    return render_template('view_poll.html', poll_id=poll_id, options=options)
+
 
 # Vote on a poll option
-@app.route('/polls/vote/<int:option_id>')
-def vote(option_id):
-    # Implement vote logic here
-    flash('Vote recorded!', 'success')
-    return redirect(url_for('list_polls'))
-# Other views, voting, and admin functionality
+@app.route('/polls/vote/<int:poll_id>', methods=['POST'])
+def vote(poll_id):
+    if 'user_id' not in session:
+        flash('You must be logged in to vote.', 'danger')
+        return redirect(url_for('login'))
+
+    option_id = request.form.get('option_id')
+
+    if not option_id:
+        flash('Please select an option to vote.', 'danger')
+    else:
+        # Implement the voting logic here (record the vote in the database)
+        db.record_vote(session['user_id'], poll_id, option_id)
+        flash('Vote recorded!', 'success')
+
+    return redirect(url_for('view_poll', poll_id=poll_id))
+
+@app.context_processor
+def inject_db_functions():
+    # Define functions you want to make available in templates
+    def get_vote_count(option_id):
+        return db.get_vote_count(option_id)
+
+    # Return the functions as a dictionary
+    return dict(
+        get_vote_count=get_vote_count
+    )
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

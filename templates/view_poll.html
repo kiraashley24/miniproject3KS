@@ -4,13 +4,18 @@
 
 {% block content %}
     <h2 class="mb-3">Poll Options</h2>
-    <ul class="list-group">
-        {% for option in options %}
-            <li class="list-group-item">
-                {{ option[1] }}
-                <a class="btn btn-primary float-end" href="{{ url_for('vote', option_id=option[0]) }}">Vote</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <form method="post" action="{{ url_for('vote', poll_id=poll_id) }}" class="needs-validation" novalidate>
+        <ul class="list-group">
+            {% for option in options %}
+                <li class="list-group-item">
+                    <label>
+                        <input type="radio" name="option_id" value="{{ option[0] }}"> {{ option[1] }}
+                    </label>
+                    <span class="badge bg-primary rounded-pill">{{ get_vote_count(option[0]) }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+        <button type="submit" class="btn btn-primary mt-3">Vote</button>
+    </form>
 </div>
 {% endblock %}

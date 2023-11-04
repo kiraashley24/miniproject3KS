@@ -33,7 +33,14 @@ def create_tables():
         )
     ''')
 
-    # Create other tables as needed (e.g., votes)
+    cursor.execute('''
+           CREATE TABLE IF NOT EXISTS votes (
+               id INTEGER PRIMARY KEY,
+               user_id INTEGER, -- Reference to the user who voted
+               poll_id INTEGER, -- Reference to the poll
+               option_id INTEGER -- Reference to the selected option
+           )
+       ''')
 
     conn.commit()
     conn.close()
@@ -89,5 +96,11 @@ def get_poll_options(poll_id):
     conn.close()
     return options
 
-# You can add more functions for managing polls and options as needed
+def get_vote_count(option_id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM votes WHERE option_id = ?", (option_id,))
+    count = cursor.fetchone()[0]
+    conn.close()
+    return count
 
