@@ -5,9 +5,14 @@
 {% block content %}
     <h2 class="mb-3">Vote Counts</h2>
     <ul class="list-group">
-        {% for option in options %}
+        {% for poll in polls %}
             <li class="list-group-item">
-                {{ option[1] }}: {{ get_vote_count(option[0]) }} votes
+                <h4>{{ poll[1] }}</h4>
+                <ul>
+                    {% for option in vote_counts[poll[0]] %}
+                        <li>{{ option[1] }}: {{ option[0] }} votes</li>
+                    {% endfor %}
+                </ul>
             </li>
         {% endfor %}
     </ul>

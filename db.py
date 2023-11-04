@@ -119,4 +119,13 @@ def has_user_voted(user_id, poll_id):
     conn.close()
     return result
 
+def get_vote_counts(poll_id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT option_text, COUNT(votes.id) FROM poll_options LEFT JOIN votes ON poll_options.id = votes.option_id WHERE poll_options.poll_id = ? GROUP BY poll_options.id", (poll_id,))
+    vote_counts = cursor.fetchall()
+    conn.close()
+    return vote_counts
+
+
 
