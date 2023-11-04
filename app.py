@@ -72,6 +72,11 @@ def create_poll():
         poll_id = db.add_poll(question)
         options = request.form.getlist('option_text')  # Get a list of options
 
+        # Ensure that there are up to 5 options
+        if len(options) > 5:
+            flash('You can have up to 5 options for a poll.', 'danger')
+            return redirect(url_for('create_poll'))
+
         for option_text in options:
             db.add_option_to_poll(poll_id, option_text)
 
