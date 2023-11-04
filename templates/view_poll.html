@@ -9,7 +9,7 @@
             {% for option in options %}
                 <li class="list-group-item">
                     <label>
-                        <input type="radio" name="option_id" value="{{ option[0] }}"> {{ option[1] }}
+                        <input type="checkbox" name="option_id" value="{{ option[0] }}"> {{ option[1] }}
                     </label>
                     <span class="badge bg-primary rounded-pill">{{ get_vote_count(option[0]) }}</span>
                 </li>

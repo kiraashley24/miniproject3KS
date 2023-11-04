@@ -70,12 +70,15 @@ def create_poll():
     if request.method == 'POST':
         question = request.form['question']
         poll_id = db.add_poll(question)
-        option_text = request.form.getlist('option_text')
-        for option in option_text:
-            db.add_option_to_poll(poll_id, option)
+        options = request.form.getlist('option_text')  # Get a list of options
+
+        for option_text in options:
+            db.add_option_to_poll(poll_id, option_text)
+
         flash('Poll created successfully!', 'success')
         return redirect(url_for('list_polls'))
     return render_template('create_poll.html')
+
 
 # View a specific poll
 @app.route('/polls/<int:poll_id>')
