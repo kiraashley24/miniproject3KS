@@ -2,11 +2,9 @@ import sqlite3
 
 DATABASE = 'polls.db'
 
-
 def get_db():
     conn = sqlite3.connect(DATABASE)
     return conn
-
 
 def create_tables():
     conn = get_db()
@@ -20,11 +18,25 @@ def create_tables():
         )
     ''')
 
-    # Create other tables as needed (e.g., polls, options, votes)
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS polls (
+            id INTEGER PRIMARY KEY,
+            question TEXT NOT NULL
+        )
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS poll_options (
+            id INTEGER PRIMARY KEY,
+            poll_id INTEGER,
+            option_text TEXT NOT NULL
+        )
+    ''')
+
+    # Create other tables as needed (e.g., votes)
 
     conn.commit()
     conn.close()
-
 
 def add_user(username, password):
     conn = get_db()
@@ -33,7 +45,6 @@ def add_user(username, password):
     conn.commit()
     conn.close()
 
-
 def get_user_by_username(username):
     conn = get_db()
     cursor = conn.cursor()
@@ -41,4 +52,42 @@ def get_user_by_username(username):
     user = cursor.fetchone()
     conn.close()
     return user
+
+# Add a new poll to the database
+def add_poll(question):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO polls (question) VALUES (?)", (question,))
+    poll_id = cursor.lastrowid
+    conn.commit()
+    conn.close()
+    return poll_id
+
+# Get all polls from the database
+def get_all_polls():
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, question FROM polls")
+    polls = cursor.fetchall()
+    conn.close()
+    return polls
+
+# Add an option to a poll
+def add_option_to_poll(poll_id, option_text):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO poll_options (poll_id, option_text) VALUES (?, ?)", (poll_id, option_text))
+    conn.commit()
+    conn.close()
+
+# Get options for a specific poll
+def get_poll_options(poll_id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, option_text FROM poll_options WHERE poll_id=?", (poll_id,))
+    options = cursor.fetchall()
+    conn.close()
+    return options
+
+# You can add more functions for managing polls and options as needed
 

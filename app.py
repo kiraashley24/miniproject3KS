@@ -57,6 +57,37 @@ def logout():
     session.pop('user_id', None)
     return redirect(url_for('index'))
 
+# List all polls
+@app.route('/polls')
+def list_polls():
+    polls = db.get_all_polls()
+    return render_template('poll_list.html', polls=polls)
+
+# Create a new poll
+@app.route('/polls/create', methods=['GET', 'POST'])
+def create_poll():
+    if request.method == 'POST':
+        question = request.form['question']
+        poll_id = db.add_poll(question)
+        option_text = request.form.getlist('option_text')
+        for option in option_text:
+            db.add_option_to_poll(poll_id, option)
+        flash('Poll created successfully!', 'success')
+        return redirect(url_for('list_polls'))
+    return render_template('create_poll.html')
+
+# View a specific poll
+@app.route('/polls/<int:poll_id>')
+def view_poll(poll_id):
+    options = db.get_poll_options(poll_id)
+    return render_template('view_poll.html', options=options)
+
+# Vote on a poll option
+@app.route('/polls/vote/<int:option_id>')
+def vote(option_id):
+    # Implement vote logic here
+    flash('Vote recorded!', 'success')
+    return redirect(url_for('list_polls'))
 # Other views, voting, and admin functionality
 
 if __name__ == '__main__':

@@ -1,15 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Poll List</title>
-</head>
-<body>
-    <h1>Poll List</h1>
-    <ul>
+{% extends "base.html" %}
+
+{% block title %}Polls{% endblock %}
+
+{% block content %}
+    <h2 class="mb-3">List of Polls</h2>
+    <ul class="list-group">
         {% for poll in polls %}
-            <li><a href="/poll/{{ poll.id }}">{{ poll.question }}</a></li>
+            <li class="list-group-item">
+                <a href="{{ url_for('view_poll', poll_id=poll[0]) }}">{{ poll[1] }}</a>
+            </li>
         {% endfor %}
     </ul>
-    <a href="/create_poll">Create a New Poll</a>
-</body>
-</html>
+    <a class="btn btn-primary mt-3" href="{{ url_for('create_poll') }}">Create a New Poll</a>
+</div>
+{% endblock %}

@@ -1,22 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ poll.question }}</title>
-</head>
-<body>
-    <h1>{{ poll.question }}</h1>
-    <form method="post" action="/vote/{{ poll.id }}">
-        <ul>
-            {% for option in options %}
-                <li>
-                    <label>
-                        <input type="radio" name="option_id" value="{{ option.id }}"> {{ option.option_text }}
-                    </label>
-                </li>
-            {% endfor %}
-        </ul>
-        <button type="submit">Vote</button>
-    </form>
-    <a href="/polls">Back to Poll List</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}View Poll{% endblock %}
+
+{% block content %}
+    <h2 class="mb-3">Poll Options</h2>
+    <ul class="list-group">
+        {% for option in options %}
+            <li class="list-group-item">
+                {{ option[1] }}
+                <a class="btn btn-primary float-end" href="{{ url_for('vote', option_id=option[0]) }}">Vote</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
