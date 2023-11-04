@@ -138,6 +138,12 @@ def inject_db_functions():
         get_vote_count=get_vote_count
     )
 
+# Add a route to display vote counts
+@app.route('/votes/<int:poll_id>')
+def votes(poll_id):
+    options = db.get_poll_options(poll_id)
+    return render_template('votes.html', poll_id=poll_id, options=options)
+
 
 
 if __name__ == '__main__':

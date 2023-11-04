@@ -12,5 +12,13 @@
         {% endfor %}
     </ul>
     <a class="btn btn-primary mt-3" href="{{ url_for('create_poll') }}">Create a New Poll</a>
+
+    <h2 class="mt-4">View Vote Counts</h2>
+    <ul>
+        {% for poll in polls %}
+            <li><a href="{{ url_for('votes', poll_id=poll[0]) }}">View Vote Counts for {{ poll[1] }}</a></li>
+        {% endfor %}
+    </ul>
+
 </div>
 {% endblock %}
