@@ -1,3 +1,7 @@
+#INF 601 - Advanced Programming in Python
+#Kira Selucky
+#Mini project 3
+
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import db
 
