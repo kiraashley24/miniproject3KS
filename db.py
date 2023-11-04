@@ -104,3 +104,10 @@ def get_vote_count(option_id):
     conn.close()
     return count
 
+def record_vote(user_id, poll_id, option_id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO votes (user_id, poll_id, option_id) VALUES (?, ?, ?)", (user_id, poll_id, option_id))
+    conn.commit()
+    conn.close()
+
