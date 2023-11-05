@@ -48,8 +48,7 @@ def login():
 
         if user and user[1] == input_password:
             session['user_id'] = user[0]
-            flash('Login successful!', 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('list_polls'))
         else:
             flash('Login failed. Please check your credentials.', 'danger')
 
@@ -87,7 +86,6 @@ def create_poll():
         for option_text in options:
             db.add_option_to_poll(poll_id, option_text)
 
-        flash('Poll created successfully!', 'success')
         return redirect(url_for('list_polls'))
     return render_template('create_poll.html')
 
@@ -126,7 +124,6 @@ def vote(poll_id):
         else:
             # Record the vote in the database
             db.record_vote(user_id, poll_id, option_id)
-            flash('Vote recorded!', 'success')
 
     return redirect(url_for('view_poll', poll_id=poll_id))
 

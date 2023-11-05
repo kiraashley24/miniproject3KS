@@ -13,9 +13,7 @@
     </ul>
     <a class="btn btn-primary mt-3" href="{{ url_for('create_poll') }}">Create a New Poll</a>
 
-    <h2 class="mt-4">View Vote Counts</h2>
-    <ul>
-        <li><a href="{{ url_for('votes') }}">View Vote Counts</a></li>
-    </ul>
+    <h3 class="mt-4">View Vote Counts</h3>
+    <a href="{{ url_for('votes') }}" class="btn btn-success mt-3">View vote counts</a>
 </div>
 {% endblock %}
